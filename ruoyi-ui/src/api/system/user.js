@@ -71,9 +71,9 @@ export function changeUserStatus(userId, status) {
 }
 
 // 查询用户个人信息
-export function getUserProfile() {
+export function selectUserById() {
   return request({
-    url: '/system/user/profile',
+    url: '/system/user/selectUserById',
     method: 'get'
   })
 }

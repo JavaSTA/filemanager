@@ -1,41 +1,90 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.JlFileMapper">
-    
+
     <resultMap type="JlFile" id="JlFileResult">
-        <result property="fileId"    column="file_id"    />
-        <result property="fileName"    column="file_name"    />
-        <result property="filePath"    column="file_path"    />
-        <result property="fileType"    column="file_type"    />
-        <result property="userId"    column="user_id"    />
-        <result property="deptId"    column="dept_id"    />
-        <result property="status"    column="status"    />
-        <result property="createTime"    column="create_time"    />
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileType" column="file_type"/>
+        <result property="userId" column="user_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <resultMap type="JlFileDTO" id="JlFileDTOResult">
+        <result property="fileId" column="file_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileType" column="file_type"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_Name"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
     </resultMap>
 
     <sql id="selectJlFileVo">
-        select file_id, file_name, file_path, file_type, user_id, dept_id, status, create_time from jl_file
+        select file_id,
+               file_name,
+               file_path,
+               file_type,
+               user_id,
+               dept_id,
+               status,
+               create_time
+        from jl_file
     </sql>
 
     <select id="selectJlFileList" parameterType="JlFile" resultMap="JlFileResult">
+
         <include refid="selectJlFileVo"/>
-        <where>  
-            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
-            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
-            <if test="fileType != null "> and file_type = #{fileType}</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="deptId != null "> and dept_id = #{deptId}</if>
-            <if test="status != null "> and status = #{status}</if>
+        <where>
+            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''">and file_path = #{filePath}</if>
+            <if test="fileType != null ">and file_type = #{fileType}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="status != null ">and status = #{status}</if>
+        </where>
+
+
+    </select>
+
+    <select id="selectJlFileAndNameList" parameterType="JlFile" resultMap="JlFileDTOResult">
+        SELECT
+        f.file_id,
+        f.file_name,
+        f.file_path,
+        f.file_type,
+        f.user_id,
+        f.dept_id,
+        f.STATUS,
+        f.create_time,
+        u.user_name AS 'userName',
+        d.dept_name AS 'detpName'
+        FROM
+        jl_file f
+        LEFT JOIN sys_user u ON u.user_id = f.user_id
+        LEFT JOIN sys_dept d ON d.dept_id = u.dept_id
+        <where>
+            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''">and file_path = #{filePath}</if>
+            <if test="fileType != null ">and file_type = #{fileType}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="status != null ">and status = #{status}</if>
         </where>
     </select>
-    
+
     <select id="selectJlFileByFileId" parameterType="Long" resultMap="JlFileResult">
         <include refid="selectJlFileVo"/>
         where file_id = #{fileId}
     </select>
-        
+
     <insert id="insertJlFile" parameterType="JlFile" useGeneratedKeys="true" keyProperty="fileId">
         insert into jl_file
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -46,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deptId != null">dept_id,</if>
             <if test="status != null">status,</if>
             <if test="createTime != null">create_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="fileName != null and fileName != ''">#{fileName},</if>
             <if test="filePath != null and filePath != ''">#{filePath},</if>
@@ -55,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deptId != null">#{deptId},</if>
             <if test="status != null">#{status},</if>
             <if test="createTime != null">#{createTime},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateJlFile" parameterType="JlFile">
@@ -73,11 +122,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteJlFileByFileId" parameterType="Long">
-        delete from jl_file where file_id = #{fileId}
+        delete
+        from jl_file
+        where file_id = #{fileId}
     </delete>
 
     <delete id="deleteJlFileByFileIds" parameterType="String">
-        delete from jl_file where file_id in 
+        delete from jl_file where file_id in
         <foreach item="fileId" collection="array" open="(" separator="," close=")">
             #{fileId}
         </foreach>

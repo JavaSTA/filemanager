@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.JlFileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.JlFileMapper;
@@ -34,7 +35,7 @@ public class JlFileServiceImpl implements IJlFileService
 
     /**
      * 查询文件管理列表
-     * 
+     *
      * @param jlFile 文件管理
      * @return 文件管理
      */

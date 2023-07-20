@@ -9,29 +9,19 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="文件路径" prop="filePath">
-        <el-input
-          v-model="queryParams.filePath"
-          placeholder="请输入文件路径"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="文件类型" prop="fileType">
+        <el-select v-model="queryParams.fileType" placeholder="请选择文件类型" clearable>
+          <el-option
+            v-for="dict in dict.type.file_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="用户ID" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId">
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="归属部门" prop="deptId" >
+        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" 
+        style="width: 240px"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -50,7 +40,7 @@
           v-hasPermi="['ruoyi-jl:file:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="success"
           plain
@@ -60,7 +50,7 @@
           @click="handleUpdate"
           v-hasPermi="['ruoyi-jl:file:edit']"
         >修改</el-button>
-      </el-col>
+      </el-col> -->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -72,7 +62,7 @@
           v-hasPermi="['ruoyi-jl:file:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!-- <el-col :span="1.5">
         <el-button
           type="warning"
           plain
@@ -81,28 +71,43 @@
           @click="handleExport"
           v-hasPermi="['ruoyi-jl:file:export']"
         >导出</el-button>
-      </el-col>
+      </el-col> -->
+      
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="fileList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="文件ID" align="center" prop="fileId" />
+      <!-- <el-table-column label="文件ID" align="center" prop="fileId" /> -->
       <el-table-column label="文件名" align="center" prop="fileName" />
-      <el-table-column label="文件路径" align="center" prop="filePath" />
-      <el-table-column label="文件类型" align="center" prop="fileType" />
-      <el-table-column label="用户ID" align="center" prop="userId" />
-      <el-table-column label="部门ID" align="center" prop="deptId" />
-      <el-table-column label="文件状态" align="center" prop="status" />
+      <!-- <el-table-column label="文件路径" align="center" prop="filePath" /> -->
+      <el-table-column label="文件类型" align="center" prop="fileType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.file_type" :value="scope.row.fileType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="上传用户" align="center" prop="userName" />
+      <el-table-column label="所属部门" align="center" prop="deptName" />
+      <el-table-column label="文件状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.file_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['ruoyi-jl:file:edit']"
-          >修改</el-button>
+          >修改</el-button> -->
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleDownload(scope.row)"
+          >下载</el-button>
           <el-button
             size="mini"
             type="text"
@@ -128,16 +133,36 @@
         <el-form-item label="文件名" prop="fileName">
           <el-input v-model="form.fileName" placeholder="请输入文件名" />
         </el-form-item>
-        <el-form-item label="文件路径" prop="filePath">
+        <!-- <el-form-item label="文件路径" prop="filePath">
           <el-input v-model="form.filePath" placeholder="请输入文件路径" />
-        </el-form-item>
-        <el-form-item label="用户ID" prop="userId">
+        </el-form-item> -->
+        <!-- <el-form-item label="用户ID" prop="userId">
           <el-input v-model="form.userId" placeholder="请输入用户ID" />
-        </el-form-item>
-        <el-form-item label="部门ID" prop="deptId">
+        </el-form-item> -->
+        <!-- <el-form-item label="部门" prop="deptId">
           <el-input v-model="form.deptId" placeholder="请输入部门ID" />
+        </el-form-item> -->
+        <el-form-item label="归属部门" prop="deptId">
+              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" />
+        </el-form-item>
+        <el-form-item label="文件上传" prop="deptId">
+          <el-upload
+            ref="upload"
+            :limit="1"
+            accept=".pdf"
+            :action="upload.url"
+            :headers="upload.headers"
+            :file-list="upload.fileList"
+            :on-progress="handleFileUploadProgress"
+            :on-success="handleFileSuccess"
+            :auto-upload="false">
+            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" :loading="upload.isUploading" @click="submitUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -148,9 +173,15 @@
 
 <script>
 import { listFile, getFile, delFile, addFile, updateFile } from "@/api/ruoyi-jl/file";
+import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect,selectUserById } from "@/api/system/user";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { getToken } from "@/utils/auth";
 
 export default {
   name: "File",
+  components: { Treeselect },
+  dicts: ['file_type', 'file_status'],
   data() {
     return {
       // 遮罩层
@@ -169,6 +200,8 @@ export default {
       fileList: [],
       // 弹出层标题
       title: "",
+      // 部门树选项
+      deptOptions: [],
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -192,25 +225,42 @@ export default {
         filePath: [
           { required: true, message: "文件路径不能为空", trigger: "blur" }
         ],
-        fileType: [
-          { required: true, message: "文件类型不能为空", trigger: "change" }
-        ],
-        userId: [
-          { required: true, message: "用户ID不能为空", trigger: "blur" }
-        ],
+        // fileType: [
+        //   { required: true, message: "文件类型不能为空", trigger: "change" }
+        // ],
+        // userId: [
+        //   { required: true, message: "用户ID不能为空", trigger: "blur" }
+        // ],
         deptId: [
           { required: true, message: "部门ID不能为空", trigger: "blur" }
         ],
-        status: [
-          { required: true, message: "文件状态不能为空", trigger: "change" }
-        ],
-        createTime: [
-          { required: true, message: "上传时间不能为空", trigger: "blur" }
-        ]
-      }
+        // status: [
+        //   { required: true, message: "文件状态不能为空", trigger: "change" }
+        // ],
+        // createTime: [
+        //   { required: true, message: "上传时间不能为空", trigger: "blur" }
+        // ]
+      },
+      // 上传参数
+      upload: {
+        // 是否禁用上传
+        isUploading: false,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/common/upload",
+        // 上传的文件列表
+        fileList: []
+      },
     };
+    
   },
-  created() {
+  async created() {
+    this.getDeptTree();
+    var userName = this.$store.state.user.name;
+    console.log(userName);
+    await this.selectUserById();
+    console.log(this.queryParams.deptId);
     this.getList();
   },
   methods: {
@@ -221,6 +271,12 @@ export default {
         this.fileList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    /** 查询部门下拉树结构 */
+    getDeptTree() {
+      deptTreeSelect().then(response => {
+        this.deptOptions = response.data;
       });
     },
     // 取消按钮
@@ -264,34 +320,53 @@ export default {
       this.open = true;
       this.title = "添加文件管理";
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const fileId = row.fileId || this.ids
-      getFile(fileId).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改文件管理";
-      });
-    },
+    // /** 修改按钮操作 */
+    // handleUpdate(row) {
+    //   this.reset();
+    //   const fileId = row.fileId || this.ids
+    //   getFile(fileId).then(response => {
+    //     this.form = response.data;
+    //     this.open = true;
+    //     this.title = "修改文件管理";
+    //   });
+    // },
     /** 提交按钮 */
+    // submitForm() {
+    //   this.$refs["form"].validate(valid => {
+    //     if (valid) {
+    //       if (this.form.fileId != null) {
+    //         updateFile(this.form).then(response => {
+    //           this.$modal.msgSuccess("新增成功");
+    //           this.open = false;
+    //           this.getList();
+    //         });
+    //       } else {
+    //         addFile(this.form).then(response => {
+    //           this.$modal.msgSuccess("修改成功");
+    //           this.open = false;
+    //           this.getList();
+    //         });
+    //       }
+    //     }
+    //   });
+    // },
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.fileId != null) {
-            updateFile(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
             addFile(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
             });
-          }
         }
+      });
+    },
+    async selectUserById(){
+      return new Promise((resolve, reject) => {
+        selectUserById().then(response => {
+        this.queryParams.deptId = response.data.dept.deptId;
+        resolve();
+      });
       });
     },
     /** 删除按钮操作 */
@@ -304,11 +379,36 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('ruoyi-jl/file/export', {
-        ...this.queryParams
-      }, `file_${new Date().getTime()}.xlsx`)
+    // /** 导出按钮操作 */
+    // handleExport() {
+    //   this.download('ruoyi-jl/file/export', {
+    //     ...this.queryParams
+    //   }, `file_${new Date().getTime()}.xlsx`)
+    // },
+    // 文件提交处理
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    // 文件上传中处理
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    // 文件上传成功处理
+    handleFileSuccess(response, file, fileList) {
+      this.upload.isUploading = false;
+      this.form.filePath = response.url;
+      this.$modal.msgSuccess(response.msg);
+    },
+    // 文件下载处理
+    handleDownload(row) {
+      var name = row.fileName;
+      var url = row.filePath;
+      var suffix = url.substring(url.lastIndexOf("."), url.length);
+      const a = document.createElement('a')
+      a.setAttribute('download', name + suffix)
+      a.setAttribute('target', '_blank')
+      a.setAttribute('href', url)
+      a.click()
     }
   }
 };

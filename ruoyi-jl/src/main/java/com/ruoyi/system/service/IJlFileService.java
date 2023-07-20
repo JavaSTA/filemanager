@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.JlFile;
+import com.ruoyi.system.domain.JlFileDTO;
 
 /**
  * 文件管理Service接口
@@ -21,7 +22,7 @@ public interface IJlFileService
 
     /**
      * 查询文件管理列表
-     * 
+     *
      * @param jlFile 文件管理
      * @return 文件管理集合
      */

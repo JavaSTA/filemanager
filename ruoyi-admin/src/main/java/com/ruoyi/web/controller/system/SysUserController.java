@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.domain.model.LoginUser;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -247,5 +249,17 @@ public class SysUserController extends BaseController
     public AjaxResult deptTree(SysDept dept)
     {
         return success(deptService.selectDeptTreeList(dept));
+    }
+
+
+    /**
+     * 根据Id查询用户
+     * @return
+     */
+    @GetMapping("/selectUserById")
+    public AjaxResult selectUserById(){
+        LoginUser loginUser = getLoginUser();
+        Long userId = loginUser.getUserId();
+        return success(userService.selectUserById(userId));
     }
 }

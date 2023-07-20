@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.JlFile;
+import com.ruoyi.system.domain.JlFileDTO;
 
 /**
  * 文件管理Mapper接口
@@ -58,4 +59,5 @@ public interface JlFileMapper
      * @return 结果
      */
     public int deleteJlFileByFileIds(Long[] fileIds);
+
 }

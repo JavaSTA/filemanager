@@ -121,4 +121,10 @@ public interface ISysDeptService
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
+
+    /**
+     * 查询员工部门信息
+     * @return
+     */
+    public SysDept getDeptByUserId(Long userId);
 }
