@@ -217,6 +217,11 @@ export default {
     /** 查询文件管理列表 */
     getList() {
       this.loading = true;
+      this.queryParams.params = {};
+      if (null != this.daterangeCreateTime && '' != this.daterangeCreateTime) {
+        this.queryParams.params["beginCreateTime"] = this.daterangeCreateTime[0];
+        this.queryParams.params["endCreateTime"] = this.daterangeCreateTime[1];
+      }
       privateListFile(this.queryParams).then(response => {
         this.fileList = response.rows;
         this.total = response.total;

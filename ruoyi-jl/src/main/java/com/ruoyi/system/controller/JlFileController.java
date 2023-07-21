@@ -114,6 +114,8 @@ public class JlFileController extends BaseController {
 
         //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
 
+        System.out.println(jlFile.toString());
+
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
