@@ -9,6 +9,15 @@ export function listFile(query) {
   })
 }
 
+// 查询私人文件列表
+export function privateListFile(query) {
+  return request({
+    url: '/ruoyi-jl/file/privateList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询文件管理详细
 export function getFile(fileId) {
   return request({

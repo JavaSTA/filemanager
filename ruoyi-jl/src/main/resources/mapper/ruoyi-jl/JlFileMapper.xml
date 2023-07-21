@@ -49,10 +49,11 @@
             <if test="userId != null ">and user_id = #{userId}</if>
             <if test="deptId != null ">and dept_id = #{deptId}</if>
             <if test="status != null ">and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
 
-
     </select>
+
 
     <select id="selectJlFileAndNameList" parameterType="JlFile" resultMap="JlFileDTOResult">
         SELECT

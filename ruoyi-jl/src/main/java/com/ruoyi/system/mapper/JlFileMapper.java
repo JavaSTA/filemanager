@@ -27,7 +27,6 @@ public interface JlFileMapper
      * @return 文件管理集合
      */
     public List<JlFile> selectJlFileList(JlFile jlFile);
-
     /**
      * 新增文件管理
      * 
@@ -59,5 +58,7 @@ public interface JlFileMapper
      * @return 结果
      */
     public int deleteJlFileByFileIds(Long[] fileIds);
+
+
 
 }

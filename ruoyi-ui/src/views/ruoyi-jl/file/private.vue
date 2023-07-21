@@ -9,19 +9,16 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="文件类型" prop="fileType">
-        <el-select v-model="queryParams.fileType" placeholder="请选择文件类型" clearable>
-          <el-option
-            v-for="dict in dict.type.file_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="归属部门" prop="deptId" >
-        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" 
-        style="width: 240px"/>
+      <el-form-item label="上传时间">
+        <el-date-picker
+          v-model="daterangeCreateTime"
+          style="width: 240px"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -40,17 +37,6 @@
           v-hasPermi="['ruoyi-jl:file:add']"
         >新增</el-button>
       </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['ruoyi-jl:file:edit']"
-        >修改</el-button>
-      </el-col> -->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -62,32 +48,20 @@
           v-hasPermi="['ruoyi-jl:file:remove']"
         >删除</el-button>
       </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['ruoyi-jl:file:export']"
-        >导出</el-button>
-      </el-col> -->
       
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="fileList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="文件ID" align="center" prop="fileId" /> -->
       <el-table-column label="文件名" align="center" prop="fileName" />
-      <!-- <el-table-column label="文件路径" align="center" prop="filePath" /> -->
       <el-table-column label="文件类型" align="center" prop="fileType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.file_type" :value="scope.row.fileType"/>
         </template>
       </el-table-column>
-      <el-table-column label="上传用户" align="center" prop="userName" />
-      <el-table-column label="所属部门" align="center" prop="deptName" />
+      <!-- <el-table-column label="上传用户" align="center" prop="userName" />
+      <el-table-column label="所属部门" align="center" prop="deptName" /> -->
       <el-table-column label="文件状态" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.file_status" :value="scope.row.status"/>
@@ -96,13 +70,6 @@
       <el-table-column label="上传时间" align="center" prop="createTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <!-- <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:edit']"
-          >修改</el-button> -->
           <el-button
             size="mini"
             type="text"
@@ -134,19 +101,10 @@
         <el-form-item label="文件名" prop="fileName">
           <el-input v-model="form.fileName" placeholder="请输入文件名" />
         </el-form-item>
-        <!-- <el-form-item label="文件路径" prop="filePath">
-          <el-input v-model="form.filePath" placeholder="请输入文件路径" />
-        </el-form-item> -->
-        <!-- <el-form-item label="用户ID" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入用户ID" />
-        </el-form-item> -->
-        <!-- <el-form-item label="部门" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门ID" />
-        </el-form-item> -->
         <el-form-item label="归属部门" prop="deptId">
               <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" />
         </el-form-item>
-        <el-form-item label="文件上传" prop="deptId">
+        <el-form-item label="文件上传" prop="filePath">
           <el-upload
             ref="upload"
             :limit="1"
@@ -173,7 +131,7 @@
 </template>
 
 <script>
-import { listFile, getFile, delFile, addFile, updateFile } from "@/api/ruoyi-jl/file";
+import { privateListFile,listFile, getFile, delFile, addFile, updateFile } from "@/api/ruoyi-jl/file";
 import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect,selectUserById } from "@/api/system/user";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -205,6 +163,8 @@ export default {
       deptOptions: [],
       // 是否显示弹出层
       open: false,
+      // 文件状态时间范围
+      daterangeCreateTime: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -215,6 +175,7 @@ export default {
         userId: null,
         deptId: null,
         status: null,
+        createTime: null
       },
       // 表单参数
       form: {},
@@ -226,21 +187,9 @@ export default {
         filePath: [
           { required: true, message: "文件路径不能为空", trigger: "blur" }
         ],
-        // fileType: [
-        //   { required: true, message: "文件类型不能为空", trigger: "change" }
-        // ],
-        // userId: [
-        //   { required: true, message: "用户ID不能为空", trigger: "blur" }
-        // ],
         deptId: [
           { required: true, message: "部门ID不能为空", trigger: "blur" }
         ],
-        // status: [
-        //   { required: true, message: "文件状态不能为空", trigger: "change" }
-        // ],
-        // createTime: [
-        //   { required: true, message: "上传时间不能为空", trigger: "blur" }
-        // ]
       },
       // 上传参数
       upload: {
@@ -268,7 +217,7 @@ export default {
     /** 查询文件管理列表 */
     getList() {
       this.loading = true;
-      listFile(this.queryParams).then(response => {
+      privateListFile(this.queryParams).then(response => {
         this.fileList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -316,41 +265,14 @@ export default {
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
-    handleAdd() {
+    async handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加文件管理";
+      const result = await this.selectUserById();
+      console.log(result);
+      this.form.deptId = result.dept.deptId;
     },
-    // /** 修改按钮操作 */
-    // handleUpdate(row) {
-    //   this.reset();
-    //   const fileId = row.fileId || this.ids
-    //   getFile(fileId).then(response => {
-    //     this.form = response.data;
-    //     this.open = true;
-    //     this.title = "修改文件管理";
-    //   });
-    // },
-    /** 提交按钮 */
-    // submitForm() {
-    //   this.$refs["form"].validate(valid => {
-    //     if (valid) {
-    //       if (this.form.fileId != null) {
-    //         updateFile(this.form).then(response => {
-    //           this.$modal.msgSuccess("新增成功");
-    //           this.open = false;
-    //           this.getList();
-    //         });
-    //       } else {
-    //         addFile(this.form).then(response => {
-    //           this.$modal.msgSuccess("修改成功");
-    //           this.open = false;
-    //           this.getList();
-    //         });
-    //       }
-    //     }
-    //   });
-    // },
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
@@ -365,8 +287,8 @@ export default {
     async selectUserById(){
       return new Promise((resolve, deptTree) => {
         selectUserById().then(response => {
-        //this.queryParams.deptId = response.data.dept.deptId;
-        resolve();
+        this.queryParams.deptId = response.data.dept.deptId;
+        resolve(response.data);
       });
       });
     },
@@ -380,12 +302,6 @@ export default {
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    // /** 导出按钮操作 */
-    // handleExport() {
-    //   this.download('ruoyi-jl/file/export', {
-    //     ...this.queryParams
-    //   }, `file_${new Date().getTime()}.xlsx`)
-    // },
     // 文件提交处理
     submitUpload() {
       this.$refs.upload.submit();

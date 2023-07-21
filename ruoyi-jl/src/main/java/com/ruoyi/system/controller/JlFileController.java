@@ -2,11 +2,14 @@ package com.ruoyi.system.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.page.PageDomain;
+import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.JlFileDTO;
 import com.ruoyi.system.service.ISysDeptService;
@@ -36,15 +39,14 @@ import org.springframework.web.util.UriUtils;
 
 /**
  * 文件管理Controller
- * 
+ *
  * @author HZL
  * @date 2023-07-17
  */
 @Slf4j
 @RestController
 @RequestMapping("/ruoyi-jl/file")
-public class JlFileController extends BaseController
-{
+public class JlFileController extends BaseController {
     @Autowired
     private IJlFileService jlFileService;
 
@@ -60,10 +62,24 @@ public class JlFileController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:list')")
     @GetMapping("/list")
-    public TableDataInfo list(JlFile jlFile)
-    {
+    public TableDataInfo list(JlFile jlFile) {
         //设置分页
-        startPage();
+        //startPage();
+
+        //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
+
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        System.out.println(jlFile);
+        //获取当前登录Id，
+//        LoginUser loginUser = getLoginUser();
+//        SysUser user = loginUser.getUser();
+//        //如果当前Id为1，是超级管理员，查询全部文件，如果不为1，则只查询当前部门文件
+//        if(user.getUserId() != 1){
+//            jlFile.setDeptId(user.getDeptId());
+//        }
+//        System.out.println(jlFile);
         //查询文件列表
         List<JlFile> list = jlFileService.selectJlFileList(jlFile);
         //由于JlFile类没有用户和部门名字，只有Id，需要设计一个JlFileDTO类，继承JlFile，并添加用户名和部门名属性
@@ -71,14 +87,64 @@ public class JlFileController extends BaseController
         //遍历list集合，在循环中为DTO填充值，并add到listDTO中
         for (JlFile file : list) {
             JlFileDTO jlFileDTO = new JlFileDTO();
-            BeanUtils.copyProperties(file,jlFileDTO);
+            BeanUtils.copyProperties(file, jlFileDTO);
             SysDept sysDept = sysDeptService.selectDeptById(file.getDeptId());
             jlFileDTO.setDeptName(sysDept.getDeptName());
             SysUser sysUser = sysUserService.selectUserById(file.getUserId());
             jlFileDTO.setUserName(sysUser.getUserName());
             listDTO.add(jlFileDTO);
         }
-        return getDataTable(listDTO);
+        int num = listDTO.size();
+        listDTO = listDTO.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        TableDataInfo resData = new TableDataInfo();
+        resData.setCode(0);
+        resData.setRows(listDTO);
+        resData.setTotal(num);
+        return resData;
+    }
+
+    /**
+     * 根据Id查询私人文件
+     */
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:privatelist')")
+    @GetMapping("/privateList")
+    public TableDataInfo privateList(JlFile jlFile) {
+        //设置分页
+        //startPage();
+
+        //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
+
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        //获取当前登录Id，
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        jlFile.setUserId(user.getUserId());
+        jlFile.setFileType(0L);
+        System.out.println(jlFile);
+        //查询文件列表
+        List<JlFile> list = jlFileService.selectJlFileList(jlFile);
+        //由于JlFile类没有用户和部门名字，只有Id，需要设计一个JlFileDTO类，继承JlFile，并添加用户名和部门名属性
+        List<JlFileDTO> listDTO = new ArrayList<>();
+        //遍历list集合，在循环中为DTO填充值，并add到listDTO中
+        for (JlFile file : list) {
+            JlFileDTO jlFileDTO = new JlFileDTO();
+            BeanUtils.copyProperties(file, jlFileDTO);
+            SysDept sysDept = sysDeptService.selectDeptById(file.getDeptId());
+            jlFileDTO.setDeptName(sysDept.getDeptName());
+            SysUser sysUser = sysUserService.selectUserById(file.getUserId());
+            jlFileDTO.setUserName(sysUser.getUserName());
+            listDTO.add(jlFileDTO);
+        }
+
+        int num = listDTO.size();
+        listDTO = listDTO.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        TableDataInfo resData = new TableDataInfo();
+        resData.setCode(0);
+        resData.setRows(listDTO);
+        resData.setTotal(num);
+        return resData;
     }
 
     /**
@@ -110,8 +176,9 @@ public class JlFileController extends BaseController
     @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:add')")
     @Log(title = "文件管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody JlFile jlFile)
-    {
+    public AjaxResult add(@RequestBody JlFile jlFile) {
+        System.out.println("文件信息如下：");
+        System.out.println(jlFile.toString());
         LoginUser loginUser = getLoginUser();
         Long userId = loginUser.getUserId();
         jlFile.setUserId(userId);
@@ -136,9 +203,8 @@ public class JlFileController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:remove')")
     @Log(title = "文件管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{fileIds}")
-    public AjaxResult remove(@PathVariable Long[] fileIds)
-    {
+    @DeleteMapping("/{fileIds}")
+    public AjaxResult remove(@PathVariable Long[] fileIds) {
         return toAjax(jlFileService.deleteJlFileByFileIds(fileIds));
     }
 }
