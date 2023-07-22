@@ -133,7 +133,13 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="文件名" prop="fileName">
           <el-input v-model="form.fileName" placeholder="请输入文件名" />
-        </el-form-item>
+        </el-form-item >
+          <el-form-item label="文件类型" prop="fileType" >
+          <el-select l v-model="form.fileType" placeholder="请选择下拉选择" clearable :style="{width: '100%'}">
+              <el-option v-for="dict in dict.type.file_type" :key="dict.value" :label="dict.label"
+                :value="dict.value"></el-option>
+          </el-select>
+      </el-form-item>
         <!-- <el-form-item label="文件路径" prop="filePath">
           <el-input v-model="form.filePath" placeholder="请输入文件路径" />
         </el-form-item> -->
@@ -226,9 +232,9 @@ export default {
         filePath: [
           { required: true, message: "文件路径不能为空", trigger: "blur" }
         ],
-        // fileType: [
-        //   { required: true, message: "文件类型不能为空", trigger: "change" }
-        // ],
+        fileType: [
+          { required: true, message: "文件类型不能为空", trigger: "change" }
+        ],
         // userId: [
         //   { required: true, message: "用户ID不能为空", trigger: "blur" }
         // ],

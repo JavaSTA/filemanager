@@ -18,6 +18,15 @@ export function privateListFile(query) {
   })
 }
 
+// 查询当前部门文件列表
+export function deptListFile(query) {
+  return request({
+    url: '/ruoyi-jl/file/deptlist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询文件管理详细
 export function getFile(fileId) {
   return request({

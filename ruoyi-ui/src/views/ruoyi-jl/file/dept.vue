@@ -6,7 +6,7 @@
           v-model="queryParams.fileName"
           placeholder="请输入文件名"
           clearable
-          @keyup.enter.native="handleQuery"
+          @keyup.enter.native="hanleQuery"
         />
       </el-form-item>
       <el-form-item label="上传时间">
@@ -60,8 +60,8 @@
           <dict-tag :options="dict.type.file_type" :value="scope.row.fileType"/>
         </template>
       </el-table-column> -->
-      <!-- <el-table-column label="上传用户" align="center" prop="userName" />
-      <el-table-column label="所属部门" align="center" prop="deptName" /> -->
+      <el-table-column label="上传用户" align="center" prop="userName" />
+      <!-- <el-table-column label="所属部门" align="center" prop="deptName" /> -->
       <!-- <el-table-column label="文件状态" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.file_status" :value="scope.row.status"/>
@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import { privateListFile,listFile, getFile, delFile, addFile, updateFile } from "@/api/ruoyi-jl/file";
+import { privateListFile,listFile, getFile, delFile, addFile, updateFile,deptListFile } from "@/api/ruoyi-jl/file";
 import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect,selectUserById } from "@/api/system/user";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -212,7 +212,6 @@ export default {
     await this.selectUserById();
     console.log(this.queryParams.deptId);
     this.getList();
-    console.log()
   },
   methods: {
     /** 查询文件管理列表 */
@@ -223,7 +222,7 @@ export default {
         this.queryParams.params["beginCreateTime"] = this.daterangeCreateTime[0];
         this.queryParams.params["endCreateTime"] = this.daterangeCreateTime[1];
       }
-      privateListFile(this.queryParams).then(response => {
+      deptListFile(this.queryParams).then(response => {
         this.fileList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -277,9 +276,10 @@ export default {
       this.title = "添加文件管理";
       const result = await this.selectUserById();
       console.log(result);
+      //将当前部门默认选中
       this.form.deptId = result.dept.deptId;
-      //私人文件上传，不用考虑文件类型，直接讲fileType设为0（0为私人文件）
-      this.form.fileType = 0;
+      //部门文件上传，直接将fileType设为1（fileType=1为私人文件）
+      this.form.fileType = 1;
     },
     submitForm() {
       this.$refs["form"].validate(valid => {

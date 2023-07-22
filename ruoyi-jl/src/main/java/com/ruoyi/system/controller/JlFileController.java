@@ -65,21 +65,11 @@ public class JlFileController extends BaseController {
     public TableDataInfo list(JlFile jlFile) {
         //设置分页
         //startPage();
-
         //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
-
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
         System.out.println(jlFile);
-        //获取当前登录Id，
-//        LoginUser loginUser = getLoginUser();
-//        SysUser user = loginUser.getUser();
-//        //如果当前Id为1，是超级管理员，查询全部文件，如果不为1，则只查询当前部门文件
-//        if(user.getUserId() != 1){
-//            jlFile.setDeptId(user.getDeptId());
-//        }
-//        System.out.println(jlFile);
         //查询文件列表
         List<JlFile> list = jlFileService.selectJlFileList(jlFile);
         //由于JlFile类没有用户和部门名字，只有Id，需要设计一个JlFileDTO类，继承JlFile，并添加用户名和部门名属性
@@ -91,7 +81,7 @@ public class JlFileController extends BaseController {
             SysDept sysDept = sysDeptService.selectDeptById(file.getDeptId());
             jlFileDTO.setDeptName(sysDept.getDeptName());
             SysUser sysUser = sysUserService.selectUserById(file.getUserId());
-            jlFileDTO.setUserName(sysUser.getUserName());
+            jlFileDTO.setUserName(sysUser.getNickName());
             listDTO.add(jlFileDTO);
         }
         int num = listDTO.size();
@@ -111,11 +101,8 @@ public class JlFileController extends BaseController {
     public TableDataInfo privateList(JlFile jlFile) {
         //设置分页
         //startPage();
-
         //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
-
         System.out.println(jlFile.toString());
-
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
@@ -136,7 +123,50 @@ public class JlFileController extends BaseController {
             SysDept sysDept = sysDeptService.selectDeptById(file.getDeptId());
             jlFileDTO.setDeptName(sysDept.getDeptName());
             SysUser sysUser = sysUserService.selectUserById(file.getUserId());
-            jlFileDTO.setUserName(sysUser.getUserName());
+            jlFileDTO.setUserName(sysUser.getNickName());
+            listDTO.add(jlFileDTO);
+        }
+
+        int num = listDTO.size();
+        listDTO = listDTO.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        TableDataInfo resData = new TableDataInfo();
+        resData.setCode(0);
+        resData.setRows(listDTO);
+        resData.setTotal(num);
+        return resData;
+    }
+
+    /**
+     * 查询部门文件列表
+     */
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:deptlist')")
+    @GetMapping("/deptlist")
+    public TableDataInfo deptList(JlFile jlFile) {
+        //设置分页
+        //startPage();
+        //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
+        System.out.println(jlFile.toString());
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        //获取当前登录Id，
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        jlFile.setDeptId(user.getDeptId());
+        jlFile.setFileType(1L);
+        System.out.println(jlFile);
+        //查询文件列表
+        List<JlFile> list = jlFileService.selectJlFileList(jlFile);
+        //由于JlFile类没有用户和部门名字，只有Id，需要设计一个JlFileDTO类，继承JlFile，并添加用户名和部门名属性
+        List<JlFileDTO> listDTO = new ArrayList<>();
+        //遍历list集合，在循环中为DTO填充值，并add到listDTO中
+        for (JlFile file : list) {
+            JlFileDTO jlFileDTO = new JlFileDTO();
+            BeanUtils.copyProperties(file, jlFileDTO);
+            SysDept sysDept = sysDeptService.selectDeptById(file.getDeptId());
+            jlFileDTO.setDeptName(sysDept.getDeptName());
+            SysUser sysUser = sysUserService.selectUserById(file.getUserId());
+            jlFileDTO.setUserName(sysUser.getNickName());
             listDTO.add(jlFileDTO);
         }
 
@@ -184,7 +214,6 @@ public class JlFileController extends BaseController {
         LoginUser loginUser = getLoginUser();
         Long userId = loginUser.getUserId();
         jlFile.setUserId(userId);
-        jlFile.setFileType(0L);
         jlFile.setStatus(0L);
         return toAjax(jlFileService.insertJlFile(jlFile));
     }
