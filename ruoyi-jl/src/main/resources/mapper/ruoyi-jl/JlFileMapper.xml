@@ -54,6 +54,21 @@
 
     </select>
 
+    <select id="selectDeptFileList" parameterType="JlFile" resultMap="JlFileResult">
+
+        <include refid="selectJlFileVo"/>
+        <where>
+            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''">and file_path = #{filePath}</if>
+            <if test="fileType != null ">and file_type = 1 or file_type = 2</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+
+    </select>
+
 
     <select id="selectJlFileAndNameList" parameterType="JlFile" resultMap="JlFileDTOResult">
         SELECT

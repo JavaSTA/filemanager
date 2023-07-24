@@ -9,6 +9,10 @@
           @keyup.enter.native="hanleQuery"
         />
       </el-form-item>
+      <el-form-item label="归属部门" prop="deptId" >
+        <treeselect v-model="queryParams.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属部门" 
+        style="width: 240px"/>
+      </el-form-item>
       <el-form-item label="上传时间">
         <el-date-picker
           v-model="daterangeCreateTime"
@@ -55,13 +59,13 @@
     <el-table v-loading="loading" :data="fileList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="文件名" align="center" prop="fileName" />
-      <!-- <el-table-column label="文件类型" align="center" prop="fileType">
+      <el-table-column label="文件类型" align="center" prop="fileType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.file_type" :value="scope.row.fileType"/>
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column label="上传用户" align="center" prop="userName" />
-      <!-- <el-table-column label="所属部门" align="center" prop="deptName" /> -->
+      <el-table-column label="所属部门" align="center" prop="deptName" />
       <!-- <el-table-column label="文件状态" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.file_status" :value="scope.row.status"/>
@@ -83,15 +87,6 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-jl:file:remove']"
           >删除</el-button>
-          <el-button
-            v-if="scope.row.fileType==1"
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:remove']"
-          >公开文件</el-button>
-          
         </template>
       </el-table-column>
     </el-table>
@@ -140,7 +135,7 @@
 </template>
 
 <script>
-import { privateListFile,listFile, getFile, delFile, addFile, updateFile,deptListFile } from "@/api/ruoyi-jl/file";
+import { privateListFile,listFile, getFile, delFile, addFile, updateFile,deptListFile,publicListFile } from "@/api/ruoyi-jl/file";
 import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect,selectUserById } from "@/api/system/user";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -231,7 +226,7 @@ export default {
         this.queryParams.params["beginCreateTime"] = this.daterangeCreateTime[0];
         this.queryParams.params["endCreateTime"] = this.daterangeCreateTime[1];
       }
-      deptListFile(this.queryParams).then(response => {
+      publicListFile(this.queryParams).then(response => {
         this.fileList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -287,8 +282,8 @@ export default {
       console.log(result);
       //将当前部门默认选中
       this.form.deptId = result.dept.deptId;
-      //部门文件上传，直接将fileType设为1（fileType=1为私人文件）
-      this.form.fileType = 1;
+      //公共文件上传，直接将fileType设为2（fileType=2为公共文件）
+      this.form.fileType = 2;
     },
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -304,7 +299,7 @@ export default {
     async selectUserById(){
       return new Promise((resolve, deptTree) => {
         selectUserById().then(response => {
-        this.queryParams.deptId = response.data.dept.deptId;
+        // this.queryParams.deptId = response.data.dept.deptId;
         resolve(response.data);
       });
       });

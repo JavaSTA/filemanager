@@ -45,6 +45,12 @@ public class JlFileServiceImpl implements IJlFileService
         return jlFileMapper.selectJlFileList(jlFile);
     }
 
+    @Override
+    public List<JlFile> selectDeptFileList(JlFile jlFile) {
+        return jlFileMapper.selectDeptFileList(jlFile);
+    }
+
+
     /**
      * 新增文件管理
      * 

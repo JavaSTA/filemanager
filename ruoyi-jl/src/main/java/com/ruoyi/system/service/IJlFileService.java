@@ -30,6 +30,12 @@ public interface IJlFileService
 
 
     /**
+     * 查询部门文件管理
+     * @param jlFile
+     * @return
+     */
+    public List<JlFile> selectDeptFileList(JlFile jlFile);
+    /**
      * 新增文件管理
      * 
      * @param jlFile 文件管理

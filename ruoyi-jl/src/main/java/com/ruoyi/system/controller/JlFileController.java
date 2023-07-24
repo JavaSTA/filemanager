@@ -156,6 +156,46 @@ public class JlFileController extends BaseController {
         jlFile.setFileType(1L);
         System.out.println(jlFile);
         //查询文件列表
+        List<JlFile> list = jlFileService.selectDeptFileList(jlFile);
+        //由于JlFile类没有用户和部门名字，只有Id，需要设计一个JlFileDTO类，继承JlFile，并添加用户名和部门名属性
+        List<JlFileDTO> listDTO = new ArrayList<>();
+        //遍历list集合，在循环中为DTO填充值，并add到listDTO中
+        for (JlFile file : list) {
+            JlFileDTO jlFileDTO = new JlFileDTO();
+            BeanUtils.copyProperties(file, jlFileDTO);
+            SysDept sysDept = sysDeptService.selectDeptById(file.getDeptId());
+            jlFileDTO.setDeptName(sysDept.getDeptName());
+            SysUser sysUser = sysUserService.selectUserById(file.getUserId());
+            jlFileDTO.setUserName(sysUser.getNickName());
+            listDTO.add(jlFileDTO);
+        }
+
+        int num = listDTO.size();
+        listDTO = listDTO.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        TableDataInfo resData = new TableDataInfo();
+        resData.setCode(0);
+        resData.setRows(listDTO);
+        resData.setTotal(num);
+        return resData;
+    }
+
+
+    /**
+     * 查询公共文件列表
+     */
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:publiclist')")
+    @GetMapping("/publiclist")
+    public TableDataInfo publicList(JlFile jlFile) {
+        //设置分页
+        //startPage();
+        //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
+        System.out.println(jlFile.toString());
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        jlFile.setFileType(2L);
+        System.out.println(jlFile);
+        //查询文件列表
         List<JlFile> list = jlFileService.selectJlFileList(jlFile);
         //由于JlFile类没有用户和部门名字，只有Id，需要设计一个JlFileDTO类，继承JlFile，并添加用户名和部门名属性
         List<JlFileDTO> listDTO = new ArrayList<>();

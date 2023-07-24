@@ -27,6 +27,15 @@ export function deptListFile(query) {
   })
 }
 
+// 查询公共文件列表
+export function publicListFile(query) {
+  return request({
+    url: '/ruoyi-jl/file/publiclist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询文件管理详细
 export function getFile(fileId) {
   return request({

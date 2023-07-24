@@ -27,6 +27,14 @@ public interface JlFileMapper
      * @return 文件管理集合
      */
     public List<JlFile> selectJlFileList(JlFile jlFile);
+
+
+    /**
+     * 查询部门以及公开文件
+     * @param jlFile
+     * @return
+     */
+    public List<JlFile> selectDeptFileList(JlFile jlFile);
     /**
      * 新增文件管理
      * 
