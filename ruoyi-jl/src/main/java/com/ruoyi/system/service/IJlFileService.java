@@ -66,4 +66,11 @@ public interface IJlFileService
      * @return 结果
      */
     public int deleteJlFileByFileId(Long fileId);
+
+
+    /**
+     * 公开/取消文件
+     * @param jlFile
+     */
+    void openFile(JlFile jlFile);
 }

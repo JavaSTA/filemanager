@@ -68,5 +68,13 @@ public interface JlFileMapper
     public int deleteJlFileByFileIds(Long[] fileIds);
 
 
+    /**
+     * 公开文件
+     * @param jlFile
+     * @return
+     */
+    public int openFile(JlFile jlFile);
+
+
 
 }

@@ -99,4 +99,9 @@ public class JlFileServiceImpl implements IJlFileService
     {
         return jlFileMapper.deleteJlFileByFileId(fileId);
     }
+
+    @Override
+    public void openFile(JlFile jlFile) {
+
+    }
 }

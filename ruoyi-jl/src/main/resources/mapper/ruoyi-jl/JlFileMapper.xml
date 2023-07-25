@@ -60,7 +60,7 @@
         <where>
             <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
             <if test="filePath != null  and filePath != ''">and file_path = #{filePath}</if>
-            <if test="fileType != null ">and file_type = 1 or file_type = 2</if>
+            <if test="fileType != null ">and (file_type = 1 or file_type = 2)</if>
             <if test="userId != null ">and user_id = #{userId}</if>
             <if test="deptId != null ">and dept_id = #{deptId}</if>
             <if test="status != null ">and status = #{status}</if>
@@ -136,6 +136,7 @@
         </trim>
         where file_id = #{fileId}
     </update>
+    <update id="openFile"></update>
 
     <delete id="deleteJlFileByFileId" parameterType="Long">
         delete

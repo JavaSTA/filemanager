@@ -69,3 +69,27 @@ export function delFile(fileId) {
     method: 'delete'
   })
 }
+
+// 公开/取消文件
+export function openFile(fileId,fileType) {
+  return request({
+    url: '/ruoyi-jl/file/updateFile',
+    method: 'put',
+    data: {
+      fileId: fileId,
+      fileType: fileType
+    }
+  })
+}
+
+// 归档/取消文件
+export function updateStatus(fileId,status) {
+  return request({
+    url: '/ruoyi-jl/file/updateFile',
+    method: 'put',
+    data: {
+      fileId: fileId,
+      status: status
+    }
+  })
+}
