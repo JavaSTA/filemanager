@@ -36,6 +36,15 @@ export function publicListFile(query) {
   })
 }
 
+// 查询借阅文件列表（已归档文件status=1）
+export function borrowFile(query) {
+  return request({
+    url: '/ruoyi-jl/file/borrowlist',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询文件管理详细
 export function getFile(fileId) {
   return request({

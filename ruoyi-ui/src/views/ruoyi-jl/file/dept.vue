@@ -70,6 +70,7 @@
       <el-table-column label="上传时间" align="center" prop="createTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <!-- 以下判断，公开和归档只能选一个 -->
           <el-button
             size="mini"
             type="text"
@@ -84,7 +85,7 @@
             v-hasPermi="['ruoyi-jl:file:remove']"
           >删除</el-button>
           <el-button
-            v-if="scope.row.fileType==1"
+            v-if="scope.row.fileType==1 && scope.row.status!=1"
             size="mini"
             type="text"
             icon="el-icon-delete"
@@ -100,7 +101,7 @@
             v-hasPermi="['ruoyi-jl:file:putFile']"
           >取消公开</el-button>
           <el-button
-            v-if="scope.row.status==0"
+            v-if="scope.row.status==0 && scope.row.fileType!=2"
             size="mini"
             type="text"
             icon="el-icon-delete"

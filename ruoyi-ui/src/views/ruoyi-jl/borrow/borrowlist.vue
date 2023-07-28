@@ -30,7 +30,7 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
+    <!-- <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
           type="primary"
@@ -54,16 +54,16 @@
       </el-col>
       
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    </el-row> -->
 
     <el-table v-loading="loading" :data="fileList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="文件名" align="center" prop="fileName" />
-      <el-table-column label="文件类型" align="center" prop="fileType">
+      <!-- <el-table-column label="文件类型" align="center" prop="fileType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.file_type" :value="scope.row.fileType"/>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="上传用户" align="center" prop="userName" />
       <el-table-column label="所属部门" align="center" prop="deptName" />
       <!-- <el-table-column label="文件状态" align="center" prop="status">
@@ -78,15 +78,22 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
+            @click="submitBorrow(scope.row)"
+            v-hasPermi="['ruoyi-jl:borrow:add']"
+          >借阅</el-button>
+          <!-- <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
             @click="handleDownload(scope.row)"
-          >下载</el-button>
-          <el-button
+          >下载</el-button> -->
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['ruoyi-jl:file:remove']"
-          >删除</el-button>
+          >删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -135,8 +142,10 @@
 </template>
 
 <script>
-import { privateListFile,listFile, getFile, delFile, addFile, updateFile,deptListFile,publicListFile } from "@/api/ruoyi-jl/file";
+import { privateListFile,listFile, getFile, delFile, addFile, updateFile,deptListFile,publicListFile,borrowFile } from "@/api/ruoyi-jl/file";
 import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus, deptTreeSelect,selectUserById } from "@/api/system/user";
+import { addBorrow } from "@/api/ruoyi-jl/borrow";
+
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getToken } from "@/utils/auth";
@@ -226,7 +235,7 @@ export default {
         this.queryParams.params["beginCreateTime"] = this.daterangeCreateTime[0];
         this.queryParams.params["endCreateTime"] = this.daterangeCreateTime[1];
       }
-      publicListFile(this.queryParams).then(response => {
+      borrowFile(this.queryParams).then(response => {
         this.fileList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -324,6 +333,7 @@ export default {
     },
     // 文件上传成功处理
     handleFileSuccess(response, file, fileList) {
+      console.log(response);
       this.upload.isUploading = false;
       this.form.filePath = response.url;
       this.$modal.msgSuccess(response.msg);
@@ -333,11 +343,31 @@ export default {
       var name = row.fileName;
       var url = row.filePath;
       var suffix = url.substring(url.lastIndexOf("."), url.length);
+      console.log(name);
+      console.log(url);
+      console.log(suffix);
+
       const a = document.createElement('a')
       a.setAttribute('download', name + suffix)
       a.setAttribute('target', '_blank')
       a.setAttribute('href', url)
       a.click()
+    },
+
+    //提交借阅
+    submitBorrow(row) {
+      const fileId = row.fileId;
+      const fileName = row.fileName;
+      const deptId = row.deptId;
+      console.log("fileId"+fileId);
+      console.log("fileName"+fileName);
+      console.log("deptId"+deptId);
+      this.$modal.confirm('是否申请借阅"' + fileName + '"文件？').then(function() {
+        return addBorrow(fileId,deptId);
+      }).then(response => {
+          this.$modal.msgSuccess("申请成功");
+          this.getList();
+      }).catch(() => {});
     }
   }
 };
