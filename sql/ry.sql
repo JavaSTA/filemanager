@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80026
 File Encoding         : 65001
 
-Date: 2023-07-28 11:58:47
+Date: 2023-07-29 11:42:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -109,16 +109,19 @@ CREATE TABLE `jl_borrow` (
   `status` int NOT NULL COMMENT '借阅状态',
   `create_time` datetime NOT NULL COMMENT '申请时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb3 COMMENT='借阅记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3 COMMENT='借阅记录表';
 
 -- ----------------------------
 -- Records of jl_borrow
 -- ----------------------------
-INSERT INTO `jl_borrow` VALUES ('31', '30', '104', '200', '0', '2023-07-28 11:27:37');
-INSERT INTO `jl_borrow` VALUES ('32', '23', '103', '200', '0', '2023-07-28 11:30:47');
+INSERT INTO `jl_borrow` VALUES ('32', '23', '103', '200', '1', '2023-07-28 11:30:47');
 INSERT INTO `jl_borrow` VALUES ('33', '26', '103', '200', '0', '2023-07-28 11:31:25');
 INSERT INTO `jl_borrow` VALUES ('34', '29', '103', '200', '0', '2023-07-28 11:32:21');
 INSERT INTO `jl_borrow` VALUES ('35', '30', '103', '200', '0', '2023-07-28 11:39:30');
+INSERT INTO `jl_borrow` VALUES ('36', '23', '100', '200', '0', '2023-07-29 08:26:10');
+INSERT INTO `jl_borrow` VALUES ('37', '26', '100', '200', '0', '2023-07-29 08:26:17');
+INSERT INTO `jl_borrow` VALUES ('38', '27', '100', '200', '0', '2023-07-29 08:26:19');
+INSERT INTO `jl_borrow` VALUES ('39', '25', '1', '201', '0', '2023-07-29 10:56:08');
 
 -- ----------------------------
 -- Table structure for jl_file
@@ -134,7 +137,7 @@ CREATE TABLE `jl_file` (
   `status` int NOT NULL COMMENT '文件状态',
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`file_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
 
 -- ----------------------------
 -- Records of jl_file
@@ -160,7 +163,7 @@ INSERT INTO `jl_file` VALUES ('20', '11111', 'http://localhost:8080/profile/uplo
 INSERT INTO `jl_file` VALUES ('21', '11111', 'http://localhost:8080/profile/upload/2023/07/21/JL_20230721153447A001.pdf', '0', '101', '200', '0', '2023-07-21 15:34:48');
 INSERT INTO `jl_file` VALUES ('23', '11111', 'http://localhost:8080/profile/upload/2023/07/24/JL_20230724100844A001.pdf', '1', '1', '200', '1', '2023-07-24 10:08:45');
 INSERT INTO `jl_file` VALUES ('24', 'test', 'http://localhost:8080/profile/upload/2023/07/24/JL_20230724101659A002.pdf', '1', '100', '201', '0', '2023-07-24 10:17:00');
-INSERT INTO `jl_file` VALUES ('25', '公共部门文件测试', 'http://localhost:8080/profile/upload/2023/07/24/JL_20230724104741A001.pdf', '1', '100', '201', '0', '2023-07-24 10:47:42');
+INSERT INTO `jl_file` VALUES ('25', '公共部门文件测试', 'http://localhost:8080/profile/upload/2023/07/24/JL_20230724104741A001.pdf', '1', '100', '201', '1', '2023-07-24 10:47:42');
 INSERT INTO `jl_file` VALUES ('26', '测试，部门文件公开/归档', 'http://localhost:8080/profile/upload/2023/07/25/JL_20230725100058A001.pdf', '1', '101', '200', '1', '2023-07-25 10:00:59');
 INSERT INTO `jl_file` VALUES ('27', '123', 'http://localhost:8080/profile/upload/2023/07/27/JL_20230727081204A001.pdf', '1', '1', '200', '1', '2023-07-27 08:12:07');
 INSERT INTO `jl_file` VALUES ('28', '信息部普通员工私人文件测试', 'http://localhost:8080/profile/upload/2023/07/28/JL_20230728094213A001.pdf', '0', '105', '200', '0', '2023-07-28 09:42:15');
@@ -169,6 +172,7 @@ INSERT INTO `jl_file` VALUES ('30', '信息部普通员工公共文件测试', '
 INSERT INTO `jl_file` VALUES ('31', '信息部管理私人文件测试', 'http://localhost:8080/profile/upload/2023/07/28/JL_20230728095349A004.pdf', '0', '104', '200', '0', '2023-07-28 09:53:50');
 INSERT INTO `jl_file` VALUES ('32', '信息部管理员新增公共文件测试', 'http://localhost:8080/profile/upload/2023/07/28/JL_20230728095450A005.pdf', '2', '104', '200', '0', '2023-07-28 09:54:51');
 INSERT INTO `jl_file` VALUES ('33', 'test', 'http://localhost:8080/profile/upload/2023/07/28/JL_20230728100731A006.pdf', '0', '1', '200', '0', '2023-07-28 10:07:32');
+INSERT INTO `jl_file` VALUES ('34', '12231132', 'http://localhost:8080/profile/upload/2023/07/29/JL_20230729105544A001.pdf', '1', '1', '200', '1', '2023-07-29 10:55:46');
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers
@@ -616,7 +620,7 @@ CREATE TABLE `sys_logininfor` (
   PRIMARY KEY (`info_id`),
   KEY `idx_sys_logininfor_s` (`status`),
   KEY `idx_sys_logininfor_lt` (`login_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=474 DEFAULT CHARSET=utf8mb3 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=523 DEFAULT CHARSET=utf8mb3 COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -995,6 +999,55 @@ INSERT INTO `sys_logininfor` VALUES ('470', 'xxadmin', '127.0.0.1', '内网IP', 
 INSERT INTO `sys_logininfor` VALUES ('471', 'rzadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-28 11:30:35');
 INSERT INTO `sys_logininfor` VALUES ('472', 'rzadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-28 11:30:35');
 INSERT INTO `sys_logininfor` VALUES ('473', 'rzadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-28 11:30:37');
+INSERT INTO `sys_logininfor` VALUES ('474', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 08:08:59');
+INSERT INTO `sys_logininfor` VALUES ('475', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 08:22:54');
+INSERT INTO `sys_logininfor` VALUES ('476', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 08:23:03');
+INSERT INTO `sys_logininfor` VALUES ('477', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 08:25:39');
+INSERT INTO `sys_logininfor` VALUES ('478', 'rzcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '登录用户：rzcommon 不存在', '2023-07-29 08:25:48');
+INSERT INTO `sys_logininfor` VALUES ('479', '17633333114', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 08:25:58');
+INSERT INTO `sys_logininfor` VALUES ('480', '17633333114', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 08:56:25');
+INSERT INTO `sys_logininfor` VALUES ('481', '17633333114', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 10:08:32');
+INSERT INTO `sys_logininfor` VALUES ('482', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 10:08:39');
+INSERT INTO `sys_logininfor` VALUES ('483', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 10:48:57');
+INSERT INTO `sys_logininfor` VALUES ('484', 'rzadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 10:49:05');
+INSERT INTO `sys_logininfor` VALUES ('485', 'rzadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 10:53:30');
+INSERT INTO `sys_logininfor` VALUES ('486', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 10:53:35');
+INSERT INTO `sys_logininfor` VALUES ('487', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:03:43');
+INSERT INTO `sys_logininfor` VALUES ('488', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-29 11:04:34');
+INSERT INTO `sys_logininfor` VALUES ('489', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-29 11:04:34');
+INSERT INTO `sys_logininfor` VALUES ('490', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:04:37');
+INSERT INTO `sys_logininfor` VALUES ('491', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:05:07');
+INSERT INTO `sys_logininfor` VALUES ('492', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:05:12');
+INSERT INTO `sys_logininfor` VALUES ('493', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:06:32');
+INSERT INTO `sys_logininfor` VALUES ('494', 'xxadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:06:44');
+INSERT INTO `sys_logininfor` VALUES ('495', 'xxadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:06:55');
+INSERT INTO `sys_logininfor` VALUES ('496', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-29 11:07:03');
+INSERT INTO `sys_logininfor` VALUES ('497', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-29 11:07:03');
+INSERT INTO `sys_logininfor` VALUES ('498', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:07:06');
+INSERT INTO `sys_logininfor` VALUES ('499', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:09:48');
+INSERT INTO `sys_logininfor` VALUES ('500', 'xxadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-29 11:09:54');
+INSERT INTO `sys_logininfor` VALUES ('501', 'xxadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-29 11:09:54');
+INSERT INTO `sys_logininfor` VALUES ('502', 'xxadmin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:09:57');
+INSERT INTO `sys_logininfor` VALUES ('503', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-29 11:12:12');
+INSERT INTO `sys_logininfor` VALUES ('504', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-29 11:12:12');
+INSERT INTO `sys_logininfor` VALUES ('505', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:12:15');
+INSERT INTO `sys_logininfor` VALUES ('506', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:15:38');
+INSERT INTO `sys_logininfor` VALUES ('507', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:15:43');
+INSERT INTO `sys_logininfor` VALUES ('508', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:17:04');
+INSERT INTO `sys_logininfor` VALUES ('509', '17633333114', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:17:10');
+INSERT INTO `sys_logininfor` VALUES ('510', '17633333114', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:30:40');
+INSERT INTO `sys_logininfor` VALUES ('511', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:31:00');
+INSERT INTO `sys_logininfor` VALUES ('512', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:31:48');
+INSERT INTO `sys_logininfor` VALUES ('513', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-29 11:31:54');
+INSERT INTO `sys_logininfor` VALUES ('514', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-29 11:31:54');
+INSERT INTO `sys_logininfor` VALUES ('515', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:31:57');
+INSERT INTO `sys_logininfor` VALUES ('516', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:34:35');
+INSERT INTO `sys_logininfor` VALUES ('517', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:34:40');
+INSERT INTO `sys_logininfor` VALUES ('518', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:36:30');
+INSERT INTO `sys_logininfor` VALUES ('519', 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '退出成功', '2023-07-29 11:36:47');
+INSERT INTO `sys_logininfor` VALUES ('520', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '密码输入错误1次', '2023-07-29 11:36:53');
+INSERT INTO `sys_logininfor` VALUES ('521', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '1', '用户不存在/密码错误', '2023-07-29 11:36:53');
+INSERT INTO `sys_logininfor` VALUES ('522', 'xxcommon', '127.0.0.1', '内网IP', 'Chrome 11', 'Windows 10', '0', '登录成功', '2023-07-29 11:36:56');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1021,7 +1074,7 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2034 DEFAULT CHARSET=utf8mb3 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2035 DEFAULT CHARSET=utf8mb3 COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -1120,7 +1173,7 @@ INSERT INTO `sys_menu` VALUES ('2011', '文件管理导出', '2006', '5', '#', '
 INSERT INTO `sys_menu` VALUES ('2013', '私人文件', '4', '0', 'private', 'ruoyi-jl/file/private', null, '1', '0', 'C', '0', '0', 'ruoyi-jl:file:privatelist', 'user', 'admin', '2023-07-21 08:56:33', 'admin', '2023-07-28 09:35:06', '');
 INSERT INTO `sys_menu` VALUES ('2014', '部门文件', '4', '1', 'dept', 'ruoyi-jl/file/dept', null, '1', '0', 'C', '0', '0', 'ruoyi-jl:file:deptlist', 'tree', 'admin', '2023-07-24 08:21:22', 'admin', '2023-07-28 09:35:11', '');
 INSERT INTO `sys_menu` VALUES ('2016', '公共文件', '4', '2', 'public', 'ruoyi-jl/file/public', null, '1', '0', 'C', '0', '0', 'ruoyi-jl:file:publiclist', 'list', 'admin', '2023-07-24 09:40:14', 'admin', '2023-07-24 09:55:24', '');
-INSERT INTO `sys_menu` VALUES ('2017', '公开/归档操作', '2014', '1', '', null, null, '1', '0', 'F', '0', '0', 'ruoyi-jl:file:putFile', '#', 'admin', '2023-07-25 10:52:45', 'admin', '2023-07-25 10:55:44', '');
+INSERT INTO `sys_menu` VALUES ('2017', '公开/归档操作', '2014', '1', '', null, null, '1', '0', 'F', '0', '0', 'ruoyi-jl:file:putfile', '#', 'admin', '2023-07-25 10:52:45', 'admin', '2023-07-29 11:31:21', '');
 INSERT INTO `sys_menu` VALUES ('2018', '归档文件', '4', '3', 'borrowlist', 'ruoyi-jl/borrow/borrowlist', null, '1', '0', 'C', '0', '0', 'ruoyi-jl:file:borrowlist', 'education', 'admin', '2023-07-25 11:34:13', 'admin', '2023-07-28 11:02:02', '');
 INSERT INTO `sys_menu` VALUES ('2019', '借阅记录', '4', '4', 'borrowrecords', 'ruoyi-jl/borrow/borrowrecords', null, '1', '0', 'C', '0', '0', 'ruoyi-jl:borrow:list', 'row', 'admin', '2023-07-26 10:36:38', 'admin', '2023-07-28 10:41:22', '借阅记录菜单');
 INSERT INTO `sys_menu` VALUES ('2026', '借阅审批', '4', '5', 'examinelist', 'ruoyi-jl/borrow/borrowexamine', null, '1', '0', 'C', '0', '0', 'ruoyi-jl:borrow:examinelist', 'example', 'admin', '2023-07-27 11:32:27', 'admin', '2023-07-28 10:41:56', '');
@@ -1130,6 +1183,7 @@ INSERT INTO `sys_menu` VALUES ('2029', '新增文件', '2016', '1', '', null, nu
 INSERT INTO `sys_menu` VALUES ('2030', '借阅按钮', '2018', '2', '', null, null, '1', '0', 'F', '0', '0', 'ruoyi-jl:borrow:add', '#', 'admin', '2023-07-28 09:50:19', '', null, '');
 INSERT INTO `sys_menu` VALUES ('2031', '借阅审批查询', '2026', '2', '', null, null, '1', '0', 'F', '0', '0', 'ruoyi-jl:borrow:examinelist', '#', 'admin', '2023-07-28 09:52:18', '', null, '');
 INSERT INTO `sys_menu` VALUES ('2033', '借阅列表', '2018', '1', '', null, null, '1', '0', 'F', '0', '0', 'ruoyi-jl:file:borrowlist', '#', 'admin', '2023-07-28 10:30:26', '', null, '');
+INSERT INTO `sys_menu` VALUES ('2034', '文件下载', '2014', '2', '', null, null, '1', '0', 'F', '0', '0', null, '#', 'admin', '2023-07-29 11:06:16', '', null, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1181,7 +1235,7 @@ CREATE TABLE `sys_oper_log` (
   KEY `idx_sys_oper_log_bt` (`business_type`),
   KEY `idx_sys_oper_log_s` (`status`),
   KEY `idx_sys_oper_log_ot` (`oper_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=527 DEFAULT CHARSET=utf8mb3 COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=552 DEFAULT CHARSET=utf8mb3 COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1613,6 +1667,31 @@ INSERT INTO `sys_oper_log` VALUES ('523', '借阅记录', '1', 'com.ruoyi.system
 INSERT INTO `sys_oper_log` VALUES ('524', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'rzadmin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"deptId\":200,\"fileId\":23,\"params\":{},\"userId\":103}', '{\"msg\":\"请勿重复申请借阅\",\"code\":500}', '0', null, '2023-07-28 11:34:03', '3');
 INSERT INTO `sys_oper_log` VALUES ('525', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'rzadmin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-07-28 11:39:30\",\"deptId\":200,\"fileId\":30,\"params\":{},\"status\":0,\"userId\":103}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-28 11:39:30', '51');
 INSERT INTO `sys_oper_log` VALUES ('526', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'rzadmin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"fileId\":23,\"params\":{},\"userId\":103}', '{\"msg\":\"请勿重复申请借阅\",\"code\":500}', '0', null, '2023-07-28 11:43:36', '11');
+INSERT INTO `sys_oper_log` VALUES ('527', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'admin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"deptId\":200,\"fileId\":23,\"params\":{},\"userId\":1}', '{\"msg\":\"本部门文件，无需借阅，请到部门文件中查看\",\"code\":500}', '0', null, '2023-07-29 08:15:41', '11');
+INSERT INTO `sys_oper_log` VALUES ('528', '借阅记录', '2', 'com.ruoyi.system.controller.JlBorrowController.edit()', 'PUT', '1', 'admin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"id\":31,\"params\":{},\"status\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 08:16:22', '14');
+INSERT INTO `sys_oper_log` VALUES ('529', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', '17633333114', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-07-29 08:26:10\",\"deptId\":200,\"fileId\":23,\"params\":{},\"status\":0,\"userId\":100}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 08:26:10', '19');
+INSERT INTO `sys_oper_log` VALUES ('530', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', '17633333114', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"fileId\":23,\"params\":{},\"userId\":100}', '{\"msg\":\"请勿重复申请借阅\",\"code\":500}', '0', null, '2023-07-29 08:26:13', '9');
+INSERT INTO `sys_oper_log` VALUES ('531', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', '17633333114', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-07-29 08:26:17\",\"deptId\":200,\"fileId\":26,\"params\":{},\"status\":0,\"userId\":100}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 08:26:17', '26');
+INSERT INTO `sys_oper_log` VALUES ('532', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', '17633333114', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-07-29 08:26:19\",\"deptId\":200,\"fileId\":27,\"params\":{},\"status\":0,\"userId\":100}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 08:26:19', '13');
+INSERT INTO `sys_oper_log` VALUES ('533', '借阅记录', '3', 'com.ruoyi.system.controller.JlBorrowController.remove()', 'DELETE', '1', 'admin', null, '/ruoyi-jl/borrow/31', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 10:17:10', '25');
+INSERT INTO `sys_oper_log` VALUES ('534', '借阅记录', '2', 'com.ruoyi.system.controller.JlBorrowController.edit()', 'PUT', '1', 'admin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"id\":32,\"params\":{},\"status\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 10:17:31', '10');
+INSERT INTO `sys_oper_log` VALUES ('535', '文件管理', '2', 'com.ruoyi.system.controller.JlFileController.edit()', 'PUT', '1', 'rzadmin', null, '/ruoyi-jl/file/updateFile', '127.0.0.1', '内网IP', '{\"fileId\":25,\"params\":{},\"status\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 10:49:31', '23');
+INSERT INTO `sys_oper_log` VALUES ('536', '文件管理', '1', 'com.ruoyi.system.controller.JlFileController.add()', 'POST', '1', 'admin', null, '/ruoyi-jl/file', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-07-29 10:55:45\",\"deptId\":200,\"fileId\":34,\"fileName\":\"12231132\",\"filePath\":\"http://localhost:8080/profile/upload/2023/07/29/JL_20230729105544A001.pdf\",\"fileType\":2,\"params\":{},\"status\":0,\"userId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 10:55:45', '13');
+INSERT INTO `sys_oper_log` VALUES ('537', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'admin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"createTime\":\"2023-07-29 10:56:08\",\"deptId\":201,\"fileId\":25,\"params\":{},\"status\":0,\"userId\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 10:56:08', '27');
+INSERT INTO `sys_oper_log` VALUES ('538', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'admin', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"fileId\":25,\"params\":{},\"userId\":1}', '{\"msg\":\"请勿重复申请借阅\",\"code\":500}', '0', null, '2023-07-29 10:56:12', '4');
+INSERT INTO `sys_oper_log` VALUES ('539', '借阅记录', '1', 'com.ruoyi.system.controller.JlBorrowController.add()', 'POST', '1', 'xxcommon', null, '/ruoyi-jl/borrow', '127.0.0.1', '内网IP', '{\"deptId\":200,\"fileId\":30,\"params\":{},\"userId\":105}', '{\"msg\":\"本部门文件，无需借阅，请到部门文件中查看\",\"code\":500}', '0', null, '2023-07-29 11:04:45', '8');
+INSERT INTO `sys_oper_log` VALUES ('540', '菜单管理', '1', 'com.ruoyi.web.controller.system.SysMenuController.add()', 'POST', '1', 'admin', null, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"文件下载\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":2014,\"status\":\"0\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:06:16', '11');
+INSERT INTO `sys_oper_log` VALUES ('541', '角色管理', '2', 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2023-07-17 15:13:35\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[4,2014,2013,2028,2034,2016,2029,2018,2033,2030,2019],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":3,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:06:27', '35');
+INSERT INTO `sys_oper_log` VALUES ('542', '文件管理', '2', 'com.ruoyi.system.controller.JlFileController.edit()', 'PUT', '1', 'xxadmin', null, '/ruoyi-jl/file/updateFile', '127.0.0.1', '内网IP', '{\"fileId\":34,\"fileType\":1,\"params\":{}}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:10:33', '11');
+INSERT INTO `sys_oper_log` VALUES ('543', '文件管理', '2', 'com.ruoyi.system.controller.JlFileController.edit()', 'PUT', '1', 'xxadmin', null, '/ruoyi-jl/file/updateFile', '127.0.0.1', '内网IP', '{\"fileId\":34,\"params\":{},\"status\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:10:36', '11');
+INSERT INTO `sys_oper_log` VALUES ('544', '角色管理', '2', 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2023-07-17 15:13:35\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[4,2013,2028,2014,2017,2034,2016,2029,2018,2033,2030,2019],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":3,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:16:17', '28');
+INSERT INTO `sys_oper_log` VALUES ('545', '角色管理', '2', 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2023-07-17 15:13:35\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[4,2014,2013,2028,2034,2016,2029,2018,2033,2030,2019],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":3,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:16:28', '32');
+INSERT INTO `sys_oper_log` VALUES ('546', '菜单管理', '2', 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2023-07-25 10:52:45\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2017,\"menuName\":\"公开/归档操作\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":2014,\"path\":\"\",\"perms\":\"ruoyi-jl:file:putFile\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:17:00', '19');
+INSERT INTO `sys_oper_log` VALUES ('547', '菜单管理', '2', 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2023-07-25 10:52:45\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2017,\"menuName\":\"公开/归档操作\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":2014,\"path\":\"\",\"perms\":\"ruoyi-jl:file:putfile\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:31:21', '15');
+INSERT INTO `sys_oper_log` VALUES ('548', '角色管理', '2', 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2023-07-17 15:13:35\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[4,2014,2013,2028,2034,2016,2029,2018,2033,2030,2019],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":3,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:31:36', '23');
+INSERT INTO `sys_oper_log` VALUES ('549', '角色管理', '2', 'com.ruoyi.web.controller.system.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2023-07-20 09:59:45\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,4,100,1000,1001,1002,1003,1004,1005,1006,108,500,1039,1040,1041,501,1042,1043,1044,1045,2013,2028,2014,2017,2034,2016,2029,2018,2033,2030,2019,2026,2027,2031],\"params\":{},\"roleId\":100,\"roleKey\":\"dept\",\"roleName\":\"部门管理员\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:31:45', '30');
+INSERT INTO `sys_oper_log` VALUES ('550', '文件管理', '2', 'com.ruoyi.system.controller.JlFileController.edit()', 'PUT', '1', 'admin', null, '/ruoyi-jl/file/updateFile', '127.0.0.1', '内网IP', '{\"fileId\":34,\"params\":{},\"status\":0}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:36:39', '12');
+INSERT INTO `sys_oper_log` VALUES ('551', '文件管理', '2', 'com.ruoyi.system.controller.JlFileController.edit()', 'PUT', '1', 'admin', null, '/ruoyi-jl/file/updateFile', '127.0.0.1', '内网IP', '{\"fileId\":34,\"params\":{},\"status\":1}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2023-07-29 11:36:43', '16');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1666,8 +1745,8 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', '超级管理员', 'admin', '1', '1', '1', '1', '0', '0', 'admin', '2023-07-17 15:13:35', '', null, '超级管理员');
-INSERT INTO `sys_role` VALUES ('2', '普通角色', 'common', '3', '1', '1', '1', '0', '0', 'admin', '2023-07-17 15:13:35', 'admin', '2023-07-28 10:42:19', '普通角色');
-INSERT INTO `sys_role` VALUES ('100', '部门管理员', 'dept', '2', '1', '1', '1', '0', '0', 'admin', '2023-07-20 09:59:45', 'admin', '2023-07-28 10:42:28', null);
+INSERT INTO `sys_role` VALUES ('2', '普通角色', 'common', '3', '1', '1', '1', '0', '0', 'admin', '2023-07-17 15:13:35', 'admin', '2023-07-29 11:31:36', '普通角色');
+INSERT INTO `sys_role` VALUES ('100', '部门管理员', 'dept', '2', '1', '1', '1', '0', '0', 'admin', '2023-07-20 09:59:45', 'admin', '2023-07-29 11:31:45', null);
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1700,13 +1779,13 @@ INSERT INTO `sys_role_menu` VALUES ('2', '4');
 INSERT INTO `sys_role_menu` VALUES ('2', '2013');
 INSERT INTO `sys_role_menu` VALUES ('2', '2014');
 INSERT INTO `sys_role_menu` VALUES ('2', '2016');
-INSERT INTO `sys_role_menu` VALUES ('2', '2017');
 INSERT INTO `sys_role_menu` VALUES ('2', '2018');
 INSERT INTO `sys_role_menu` VALUES ('2', '2019');
 INSERT INTO `sys_role_menu` VALUES ('2', '2028');
 INSERT INTO `sys_role_menu` VALUES ('2', '2029');
 INSERT INTO `sys_role_menu` VALUES ('2', '2030');
 INSERT INTO `sys_role_menu` VALUES ('2', '2033');
+INSERT INTO `sys_role_menu` VALUES ('2', '2034');
 INSERT INTO `sys_role_menu` VALUES ('100', '1');
 INSERT INTO `sys_role_menu` VALUES ('100', '4');
 INSERT INTO `sys_role_menu` VALUES ('100', '100');
@@ -1740,6 +1819,7 @@ INSERT INTO `sys_role_menu` VALUES ('100', '2029');
 INSERT INTO `sys_role_menu` VALUES ('100', '2030');
 INSERT INTO `sys_role_menu` VALUES ('100', '2031');
 INSERT INTO `sys_role_menu` VALUES ('100', '2033');
+INSERT INTO `sys_role_menu` VALUES ('100', '2034');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1771,14 +1851,14 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '200', 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-07-28 11:01:28', 'admin', '2023-07-17 15:13:35', '', '2023-07-28 11:01:28', '管理员');
+INSERT INTO `sys_user` VALUES ('1', '200', 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-07-29 11:36:30', 'admin', '2023-07-17 15:13:35', '', '2023-07-29 11:36:30', '管理员');
 INSERT INTO `sys_user` VALUES ('2', '105', 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2', '127.0.0.1', '2023-07-17 15:13:35', 'admin', '2023-07-17 15:13:35', '', null, '测试员');
-INSERT INTO `sys_user` VALUES ('100', '201', '17633333114', '人资普通员工', '00', '', '17633333114', '0', '', '$2a$10$XkhFaAlHUq5GRFyTysRnyOVPTEedUrGFc9zllaB01nbANXzJJLcLe', '0', '0', '127.0.0.1', '2023-07-27 11:23:01', 'admin', '2023-07-18 09:03:18', 'admin', '2023-07-28 09:29:10', null);
+INSERT INTO `sys_user` VALUES ('100', '201', '17633333114', '人资普通员工', '00', '', '17633333114', '0', '', '$2a$10$XkhFaAlHUq5GRFyTysRnyOVPTEedUrGFc9zllaB01nbANXzJJLcLe', '0', '0', '127.0.0.1', '2023-07-29 11:17:10', 'admin', '2023-07-18 09:03:18', 'admin', '2023-07-29 11:17:10', null);
 INSERT INTO `sys_user` VALUES ('101', '200', 'dept', 'deptadmin', '00', '', '', '0', '', '$2a$10$o0J2wYAIKuESuxvXY/DLHeHvkozVXq7rLetlmMRkw5P8x7hsEE.V.', '0', '2', '127.0.0.1', '2023-07-28 09:21:09', 'admin', '2023-07-20 10:00:38', 'admin', '2023-07-28 09:21:08', null);
 INSERT INTO `sys_user` VALUES ('102', '201', '人资管理员', 'rzadmin', '00', '', '', '0', '', '$2a$10$k0JW1CK68YwyLuGqvCiKwe9saaj1wuVh9KxAOUPK3V65XeUqWLvhC', '0', '2', '', null, 'admin', '2023-07-28 09:28:20', '', null, null);
-INSERT INTO `sys_user` VALUES ('103', '201', 'rzadmin', '人资管理员', '00', '', '', '0', '', '$2a$10$dsCNIDC8DTM.qpxx8o40fuEdR1E6tU3oW2LbxDilaiLr8IjQdARHe', '0', '0', '127.0.0.1', '2023-07-28 11:30:38', 'admin', '2023-07-28 09:30:12', '', '2023-07-28 11:30:37', null);
-INSERT INTO `sys_user` VALUES ('104', '200', 'xxadmin', '信息部管理员', '00', '', '', '0', '', '$2a$10$7D8kUcH7evcrBtf31U02vuKxBHdgJal73d04tNWW8OmI4EernWOTa', '0', '0', '127.0.0.1', '2023-07-28 11:25:14', 'admin', '2023-07-28 09:30:32', '', '2023-07-28 11:25:13', null);
-INSERT INTO `sys_user` VALUES ('105', '200', 'xxcommon', '信息部员工', '00', '', '', '0', '', '$2a$10$6GeQjOAFXUe39s8Rz3qb7eTP4d/OjbXsG.YmcC4C/0mW/FeAL8PnK', '0', '0', '127.0.0.1', '2023-07-28 10:52:18', 'admin', '2023-07-28 09:31:08', '', '2023-07-28 10:52:18', null);
+INSERT INTO `sys_user` VALUES ('103', '201', 'rzadmin', '人资管理员', '00', '', '', '0', '', '$2a$10$dsCNIDC8DTM.qpxx8o40fuEdR1E6tU3oW2LbxDilaiLr8IjQdARHe', '0', '0', '127.0.0.1', '2023-07-29 10:49:05', 'admin', '2023-07-28 09:30:12', '', '2023-07-29 10:49:05', null);
+INSERT INTO `sys_user` VALUES ('104', '200', 'xxadmin', '信息部管理员', '00', '', '', '0', '', '$2a$10$7D8kUcH7evcrBtf31U02vuKxBHdgJal73d04tNWW8OmI4EernWOTa', '0', '0', '127.0.0.1', '2023-07-29 11:09:57', 'admin', '2023-07-28 09:30:32', '', '2023-07-29 11:09:57', null);
+INSERT INTO `sys_user` VALUES ('105', '200', 'xxcommon', '信息部员工', '00', '', '', '0', '', '$2a$10$6GeQjOAFXUe39s8Rz3qb7eTP4d/OjbXsG.YmcC4C/0mW/FeAL8PnK', '0', '0', '127.0.0.1', '2023-07-29 11:36:56', 'admin', '2023-07-28 09:31:08', '', '2023-07-29 11:36:55', null);
 
 -- ----------------------------
 -- Table structure for sys_user_post
