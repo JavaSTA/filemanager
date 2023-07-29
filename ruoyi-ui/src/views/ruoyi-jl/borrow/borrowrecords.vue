@@ -1,37 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="文件ID" prop="fileId">
+      <el-form-item label="文件名" prop="fileName">
         <el-input
-          v-model="queryParams.fileId"
-          placeholder="请输入文件ID"
+          v-model="queryParams.fileName"
+          placeholder="请输入文件名"
           clearable
-          @keyup.enter.native="handleQuery"
+          @keyup.enter.native="hanleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户ID" prop="userId">
-        <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="部门ID" prop="deptId">
-        <el-input
-          v-model="queryParams.deptId"
-          placeholder="请输入部门ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="申请时间" prop="createTime">
-        <el-date-picker clearable
-          v-model="queryParams.createTime"
-          type="date"
+      <el-form-item label="申请时间">
+        <el-date-picker
+          v-model="daterangeCreateTime"
+          style="width: 240px"
           value-format="yyyy-MM-dd"
-          placeholder="请选择申请时间">
-        </el-date-picker>
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -39,58 +26,12 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['ruoyi-jl:borrow:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['ruoyi-jl:borrow:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['ruoyi-jl:borrow:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['ruoyi-jl:borrow:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
     <el-table v-loading="loading" :data="borrowList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="借阅ID" align="center" prop="id" />
+      <!-- <el-table-column label="借阅ID" align="center" prop="id" /> -->
       <el-table-column label="借阅文件" align="center" prop="fileName" />
       <!-- <el-table-column label="借阅用户" align="center" prop="userName" /> -->
-      <!-- <el-table-column label="部门" align="center" prop="deptName" /> -->
+      <el-table-column label="部门" align="center" prop="deptName" />
       <el-table-column label="借阅状态" align="center" prop="status" >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.borrow_status" :value="scope.row.status"/>
@@ -98,7 +39,7 @@
       </el-table-column>
       <el-table-column label="申请时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -182,6 +123,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 文件状态时间范围
+      daterangeCreateTime: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -221,6 +164,11 @@ export default {
     /** 查询借阅记录列表 */
     getList() {
       this.loading = true;
+      this.queryParams.params = {};
+      if (null != this.daterangeCreateTime && '' != this.daterangeCreateTime) {
+        this.queryParams.params["beginCreateTime"] = this.daterangeCreateTime[0];
+        this.queryParams.params["endCreateTime"] = this.daterangeCreateTime[1];
+      }
       listBorrow(this.queryParams).then(response => {
         this.borrowList = response.rows;
         this.total = response.total;

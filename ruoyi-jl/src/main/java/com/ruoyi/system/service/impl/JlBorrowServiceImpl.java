@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.JlBorrowDTO;
 import com.ruoyi.system.service.IJlFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,11 @@ public class JlBorrowServiceImpl implements IJlBorrowService
     public List<JlBorrow> selectJlBorrowList(JlBorrow jlBorrow)
     {
         return jlBorrowMapper.selectJlBorrowList(jlBorrow);
+    }
+
+    @Override
+    public List<JlBorrowDTO> selectJlBorrowDTOList(JlBorrowDTO jlBorrowDTO) {
+        return jlBorrowMapper.selectJlBorrowDTOList(jlBorrowDTO);
     }
 
     /**

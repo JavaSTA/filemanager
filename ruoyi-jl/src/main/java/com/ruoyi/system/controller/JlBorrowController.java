@@ -62,13 +62,14 @@ public class JlBorrowController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(JlBorrow jlBorrow)
     {
+        System.out.println("新增文件列表：");
+        System.out.println(jlBorrow);
         //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        //LoginUser获取当前部门ID，通过当前登录用户的部门ID查询借阅列表
+        //LoginUser获取当前部门ID，通过当前登录用户的查询借阅记录列表
         LoginUser loginUser = getLoginUser();
-//        jlBorrow.setDeptId(loginUser.getDeptId());
         jlBorrow.setUserId(loginUser.getUserId());
         List<JlBorrow> jlBorrowList = jlBorrowService.selectJlBorrowList(jlBorrow);
         //使用DTO类型，new一个泛型为JlBorrowDTO的集合
@@ -93,33 +94,49 @@ public class JlBorrowController extends BaseController
     }
 
     /**
-     * 查询借阅审批列表
+     * 查询借阅记录列表
      */
-    @PreAuthorize("@ss.hasPermi('ruoyi-jl:borrow:examinelist')")
-    @GetMapping("/examinelist")
-    public TableDataInfo examineList(JlBorrow jlBorrow)
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:borrow:list')")
+    @GetMapping("/listdto")
+    public TableDataInfo listdto(JlBorrowDTO jlBorrowDTO)
     {
+        System.out.println("新增文件列表：");
+        System.out.println(jlBorrowDTO.toString());
         //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        //LoginUser获取当前部门ID，通过当前登录用户的部门ID查询借阅列表
+        //LoginUser获取当前用户ID，通过当前登录用户的查询借阅记录列表
         LoginUser loginUser = getLoginUser();
-        jlBorrow.setDeptId(loginUser.getDeptId());
-        System.out.println(jlBorrow);
-        List<JlBorrow> jlBorrowList = jlBorrowService.selectJlBorrowList(jlBorrow);
-        //使用DTO类型，new一个泛型为JlBorrowDTO的集合
-        List<JlBorrowDTO> jlBorrowDTOList = new ArrayList<>();
-        //遍历jlBorrowList，为DTO填充值
-        for (JlBorrow borrow:jlBorrowList){
-            JlBorrowDTO borrowDTO = new JlBorrowDTO();
-            BeanUtils.copyProperties(borrow,borrowDTO);
-            borrowDTO.setFilePath(jlFileService.selectJlFileByFileId(borrowDTO.getFileId()).getFilePath());
-            borrowDTO.setFileName(jlFileService.selectJlFileByFileId(borrowDTO.getFileId()).getFileName());
-            borrowDTO.setUserName(sysUserService.selectUserById(jlBorrowService.selectJlBorrowById(borrowDTO.getId()).getUserId()).getNickName());
-            borrowDTO.setDeptName(sysDeptService.selectDeptById(loginUser.getDeptId()).getDeptName());
-            jlBorrowDTOList.add(borrowDTO);
-        }
+        jlBorrowDTO.setUserId(loginUser.getUserId());
+        List<JlBorrowDTO> jlBorrowDTOList = jlBorrowService.selectJlBorrowDTOList(jlBorrowDTO);
+        int num = jlBorrowDTOList.size();
+        jlBorrowDTOList = jlBorrowDTOList.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        TableDataInfo resData = new TableDataInfo();
+        resData.setCode(0);
+        resData.setRows(jlBorrowDTOList);
+        resData.setTotal(num);
+        return resData;
+    }
+
+
+    /**
+     * 查询借阅审批列表
+     */
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:borrow:examinelist')")
+    @GetMapping("/examinelist")
+    public TableDataInfo examineList(JlBorrowDTO jlBorrowDTO)
+    {
+        System.out.println("新增文件列表：");
+        System.out.println(jlBorrowDTO.toString());
+        //因为使用了DTO，导致若依封装好的分页失效，参考https://cloud.tencent.com/developer/article/2031268
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        Integer pageNum = pageDomain.getPageNum();
+        Integer pageSize = pageDomain.getPageSize();
+        //LoginUser获取当前部门ID，通过当前部门查询借阅记录列表
+        LoginUser loginUser = getLoginUser();
+        jlBorrowDTO.setDeptId(loginUser.getDeptId());
+        List<JlBorrowDTO> jlBorrowDTOList = jlBorrowService.selectJlBorrowDTOList(jlBorrowDTO);
         int num = jlBorrowDTOList.size();
         jlBorrowDTOList = jlBorrowDTOList.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
         TableDataInfo resData = new TableDataInfo();

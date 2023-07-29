@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询借阅记录列表
 export function listBorrow(query) {
   return request({
-    url: '/ruoyi-jl/borrow/list',
+    url: '/ruoyi-jl/borrow/listdto',
     method: 'get',
     params: query
   })

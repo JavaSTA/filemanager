@@ -12,6 +12,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="status"    />
         <result property="createTime"    column="create_time"    />
     </resultMap>
+    <resultMap type="JlBorrowDTO" id="JlBorrowDTOResult">
+        <result property="id"    column="id"    />
+        <result property="fileId"    column="file_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="nick_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_Name"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
 
     <sql id="selectJlBorrowVo">
         select id, file_id, user_id, dept_id, status, create_time from jl_borrow
@@ -19,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectJlBorrowList" parameterType="JlBorrow" resultMap="JlBorrowResult">
         <include refid="selectJlBorrowVo"/>
-        <where>  
+        <where>
             <if test="fileId != null "> and file_id = #{fileId}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="deptId != null "> and dept_id = #{deptId}</if>
@@ -32,7 +44,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectJlBorrowVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="selectJlBorrowDTOList" parameterType="JlBorrowDTO" resultMap="JlBorrowDTOResult">
+        SELECT
+        b.id,
+        f.file_id,
+        f.file_name,
+        f.file_path,
+        b.user_id,
+        u.nick_name,
+        b.dept_id,
+        d.dept_name,
+        b.STATUS,
+        b.create_time
+        FROM
+        jl_borrow AS b
+        INNER JOIN jl_file AS f ON f.file_id = b.file_id
+        INNER JOIN sys_dept AS d ON d.dept_id = b.dept_id
+        INNER JOIN sys_user AS u ON u.user_id = b.user_id
+        <where>
+            <if test="fileName != null ">and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="userName != null ">and nick_name like concat('%', #{userName}, '%')</if>
+            <if test="fileId != null "> and f.file_id = #{fileId}</if>
+            <if test="userId != null "> and b.user_id = #{userId}</if>
+            <if test="deptId != null "> and b.dept_id = #{deptId}</if>
+            <if test="status != null "> and b.status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and b.create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
     <insert id="insertJlBorrow" parameterType="JlBorrow">
         insert into jl_borrow
         <trim prefix="(" suffix=")" suffixOverrides=",">

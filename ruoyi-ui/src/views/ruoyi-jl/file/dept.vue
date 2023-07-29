@@ -90,7 +90,7 @@
             type="text"
             icon="el-icon-delete"
             @click="openFile(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putFile']"
+            v-hasPermi="['ruoyi-jl:file:putfile']"
           >点击公开</el-button>
           <el-button
             v-if="scope.row.fileType==2"
@@ -98,7 +98,7 @@
             type="text"
             icon="el-icon-delete"
             @click="openFile(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putFile']"
+            v-hasPermi="['ruoyi-jl:file:putfile']"
           >取消公开</el-button>
           <el-button
             v-if="scope.row.status==0 && scope.row.fileType!=2"
@@ -106,15 +106,15 @@
             type="text"
             icon="el-icon-delete"
             @click="updateStatus(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putFile']"
+            v-hasPermi="['ruoyi-jl:file:putfile']"
           >点击归档</el-button>
           <el-button
-            v-if="scope.row.status==1"
+            v-if="scope.row.status == 1"
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="updateStatus(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putFile']"
+            v-hasPermi="['ruoyi-jl:file:putfile']"
           >取消归档</el-button>
           
         </template>

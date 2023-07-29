@@ -211,7 +211,7 @@ public class JlFileController extends BaseController {
     }
 
     /**
-     * 查询借阅（已归档）文件列表
+     * 查询归档文件列表
      */
     @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:borrowlist')")
     @GetMapping("/borrowlist")
@@ -292,7 +292,7 @@ public class JlFileController extends BaseController {
     /**
      * 修改文件管理
      */
-    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:putFile')")
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:putfile')")
     @Log(title = "文件管理", businessType = BusinessType.UPDATE)
     @PutMapping("/updateFile")
     public AjaxResult edit(@RequestBody JlFile jlFile)

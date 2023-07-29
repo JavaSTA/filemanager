@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.JlBorrow;
+import com.ruoyi.system.domain.JlBorrowDTO;
 
 /**
  * 借阅记录Service接口
@@ -21,11 +22,19 @@ public interface IJlBorrowService
 
     /**
      * 查询借阅记录列表
-     * 
+     *
      * @param jlBorrow 借阅记录
      * @return 借阅记录集合
      */
     public List<JlBorrow> selectJlBorrowList(JlBorrow jlBorrow);
+
+    /**
+     * 查询借阅记录列表
+     *
+     * @param jlBorrowDTO 借阅记录
+     * @return 借阅记录集合
+     */
+    public List<JlBorrowDTO> selectJlBorrowDTOList(JlBorrowDTO jlBorrowDTO);
 
     /**
      * 新增借阅记录
