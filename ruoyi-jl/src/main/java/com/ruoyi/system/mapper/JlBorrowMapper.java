@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import java.util.List;
 import com.ruoyi.system.domain.JlBorrow;
 import com.ruoyi.system.domain.JlBorrowDTO;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 借阅记录Mapper接口
@@ -10,7 +11,8 @@ import com.ruoyi.system.domain.JlBorrowDTO;
  * @author HZL
  * @date 2023-07-26
  */
-public interface JlBorrowMapper 
+@Mapper
+public interface JlBorrowMapper
 {
     /**
      * 查询借阅记录

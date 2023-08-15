@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import java.util.List;
 import com.ruoyi.system.domain.JlFile;
 import com.ruoyi.system.domain.JlFileDTO;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 文件管理Mapper接口
@@ -10,6 +11,7 @@ import com.ruoyi.system.domain.JlFileDTO;
  * @author HZL
  * @date 2023-07-17
  */
+@Mapper
 public interface JlFileMapper 
 {
     /**
@@ -26,7 +28,8 @@ public interface JlFileMapper
      * @param jlFile 文件管理
      * @return 文件管理集合
      */
-    public List<JlFile> selectJlFileList(JlFile jlFile);
+    public List<JlFile>
+    selectJlFileList(JlFile jlFile);
 
 
     /**

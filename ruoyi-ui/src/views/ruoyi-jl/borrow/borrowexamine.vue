@@ -208,6 +208,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.daterangeCreateTime=[];
       this.resetForm("queryForm");
       this.handleQuery();
     },
@@ -274,7 +275,7 @@ export default {
           return updateBorrow(id,status);
         }).then(() => {
           this.getList();
-          this.$modal.msgSuccess("公开成功");
+          this.$modal.msgSuccess("审批通过");
         }).catch(() => {});
       }
   },

@@ -108,7 +108,7 @@
           <el-upload
             ref="upload"
             :limit="1"
-            accept=".pdf"
+            accept=".pdf,.doc,.docx"
             :action="upload.url"
             :headers="upload.headers"
             :file-list="upload.fileList"
@@ -237,6 +237,7 @@ export default {
     },
     // 取消按钮
     cancel() {
+      this.upload.fileList=[];
       this.open = false;
       this.reset();
     },
@@ -261,6 +262,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.daterangeCreateTime=[];
       this.resetForm("queryForm");
       this.handleQuery();
     },

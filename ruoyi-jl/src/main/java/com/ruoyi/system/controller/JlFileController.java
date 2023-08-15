@@ -292,7 +292,7 @@ public class JlFileController extends BaseController {
     /**
      * 修改文件管理
      */
-    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:putfile')")
+    @PreAuthorize("@ss.hasPermi('ruoyi-jl:file:put')")
     @Log(title = "文件管理", businessType = BusinessType.UPDATE)
     @PutMapping("/updateFile")
     public AjaxResult edit(@RequestBody JlFile jlFile)

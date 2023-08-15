@@ -21,7 +21,7 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" >搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -69,7 +69,7 @@
       </el-table-column> -->
       <el-table-column label="上传时间" align="center" prop="createTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
+        <template slot-scope="scope" >
           <!-- 以下判断，公开和归档只能选一个 -->
           <el-button
             size="mini"
@@ -85,36 +85,36 @@
             v-hasPermi="['ruoyi-jl:file:remove']"
           >删除</el-button>
           <el-button
-            v-if="scope.row.fileType==1 && scope.row.status!=1"
+            v-show="scope.row.status==0 && scope.row.fileType==1"
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="openFile(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putfile']"
+            v-hasPermi="['ruoyi-jl:file:put']"
           >点击公开</el-button>
           <el-button
-            v-if="scope.row.fileType==2"
+            v-show="scope.row.status==0 && scope.row.fileType==2"
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="openFile(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putfile']"
+            v-hasPermi="['ruoyi-jl:file:put']"
           >取消公开</el-button>
           <el-button
-            v-if="scope.row.status==0 && scope.row.fileType!=2"
+          v-show="scope.row.status==0 && scope.row.fileType==1"
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="updateStatus(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putfile']"
+            v-hasPermi="['ruoyi-jl:file:put']"
           >点击归档</el-button>
           <el-button
-            v-if="scope.row.status == 1"
+          v-show="scope.row.status==1 && scope.row.fileType==1"
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="updateStatus(scope.row)"
-            v-hasPermi="['ruoyi-jl:file:putfile']"
+            v-hasPermi="['ruoyi-jl:file:put']"
           >取消归档</el-button>
           
         </template>
@@ -142,7 +142,7 @@
           <el-upload
             ref="upload"
             :limit="1"
-            accept=".pdf"
+            accept=".pdf,.doc,.docx"
             :action="upload.url"
             :headers="upload.headers"
             :file-list="upload.fileList"
@@ -270,6 +270,7 @@ export default {
     },
     // 取消按钮
     cancel() {
+      this.upload.fileList=[];
       this.open = false;
       this.reset();
     },
@@ -294,6 +295,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.daterangeCreateTime=[];
       this.resetForm("queryForm");
       this.handleQuery();
     },
